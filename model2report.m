@@ -157,7 +157,7 @@ estimated_volume = estimated_volume*(0.125*0.125*0.3);
 fprintf('Volume bounded by fitted ellipsoid: %d (um^3)\n', estimated_volume);
 
 % Dimensions of the fitted ellipsoid
-fprintf('Lengths of principal axes of the fitted ellipsoid (um): %d, %d, %d', ...
+fprintf('Lengths of principal axes of the fitted ellipsoid (um): %d, %d, %d\n', ...
     radii(1), radii(2), radii(3));
 pause
 % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< <<<<<<
