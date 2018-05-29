@@ -1,9 +1,11 @@
 % -------------------------------------------------------------------------
-% [Ben] 05/02/18
+% [Ben] 05/28/18
 % Basically a modified 'main.m'. modelname is the name (excluding the .mat
 % extension) of the saved model file. If modelname is set to [], then the
 % default value used will be the name of the .nd2 file (excluding the .nd2
-% extension).
+% extension). In addition to saving model parameters to a .mat file, now
+% also saves model parameters to a .xlsx file.
+% Should separate the parameter saving from the parameter extraction.
 % -------------------------------------------------------------------------
 
 function train_model(imagepath, modelname)
@@ -64,11 +66,40 @@ model.final_traceback = final_traceback;
 % should eventually turn to using try-catch statements for error handling
 if isempty(modelname)
     [~, name, ~] = fileparts(imagepath);
-    model.name = name;
-else
-    model.name = modelname;
+    modelname = name;
+end
+model.name = modelname;
+
+% for saving model parameters to a .mat file in models/
+try
+    save(sprintf('models/%s.mat', model.name), 'model');
+catch exception
+    msgText = getReport(exception);
+    warning(msgText);
+    pause
 end
 
-save(sprintf('models/%s.mat', model.name), 'model');
+% for saving model parameters to an .xlsx file in models_xlsx/
+try
+    T_cort = table(cort_x, cort_y, cort_z, ...
+        'VariableNames', {'cort_x' 'cort_y' 'cort_z'});
+    T_oa = table(oa_x, oa_y, oa_z, ...
+        'VariableNames', {'oa_x' 'oa_y' 'oa_z'});
+    T_antPole = table(antPole, ...
+        'VariableNames', {'antPole_x' 'antPole_y' 'antPole_x'});
+    % note that transpose is saved to .xlsx file, but for .mat file the
+    % matrix saved is not transposed
+    T_finalTraceback = array2table(transpose(final_traceback), ...
+        'VariableNames', cellfun(@(x) sprintf('R%d', x), ...
+        num2cell(1:size(final_traceback, 1)), 'UniformOutput', false));
+    filename = sprintf('models_xlsx/%s.xlsx', model.name);
+    writetable(T_cort, filename, 'Sheet', 1);
+    writetable(T_oa, filename, 'Sheet', 2);
+    writetable(T_antPole, filename, 'Sheet', 3);
+    writetable(T_finalTraceback, filename, 'Sheet', 4);
+catch exception
+    msgText = getReport(exception);
+    warning(msgText);
+    pause
 end
-
+end

@@ -1,5 +1,5 @@
 % -------------------------------------------------------------------------
-% [Ben] 05/02/18
+% [Ben] 05/28/18
 % This is to be run inside the BB_alignment directory. 
 % -------------------------------------------------------------------------
 addpath(genpath('bfmatlab'))
@@ -10,5 +10,6 @@ addpath(genpath('nd2_files'))
 addpath(genpath('development'))
 addpath(genpath('utilities'))
 addpath(genpath('models'))
+addpath(genpath('models_xlsx'))
 addpath(genpath('demos'))
 bfCheckJavaPath()
