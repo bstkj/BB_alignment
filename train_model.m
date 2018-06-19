@@ -85,14 +85,16 @@ try
         'VariableNames', {'cort_x' 'cort_y' 'cort_z'});
     T_oa = table(oa_x, oa_y, oa_z, ...
         'VariableNames', {'oa_x' 'oa_y' 'oa_z'});
-    T_antPole = table(antPole, ...
-        'VariableNames', {'antPole_x' 'antPole_y' 'antPole_x'});
+    T_antPole = table(antPole(1), antPole(2), antPole(3), ...
+        'VariableNames', {'antPole_x' 'antPole_y' 'antPole_z'});
     % note that transpose is saved to .xlsx file, but for .mat file the
     % matrix saved is not transposed
     T_finalTraceback = array2table(transpose(final_traceback), ...
         'VariableNames', cellfun(@(x) sprintf('R%d', x), ...
         num2cell(1:size(final_traceback, 1)), 'UniformOutput', false));
     filename = sprintf('models_xlsx/%s.xlsx', model.name);
+    % this information can later be extracted from the .xlsx file by
+    % readtable(filename, 'Sheet', <sheet_number>)
     writetable(T_cort, filename, 'Sheet', 1);
     writetable(T_oa, filename, 'Sheet', 2);
     writetable(T_antPole, filename, 'Sheet', 3);
